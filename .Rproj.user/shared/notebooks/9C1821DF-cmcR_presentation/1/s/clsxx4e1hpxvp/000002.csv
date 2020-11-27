@@ -1,0 +1,33 @@
+"0","fadul1.1 <- fadul1.1_raw %>%
+  preProcess_crop(region = ""exterior"",
+                  radiusOffset = -30) %>%
+  preProcess_crop(region = ""interior"",
+                  radiusOffset = 200) %>%
+  preProcess_removeTrend(statistic = ""quantile"",
+                                 tau = .5,
+                                 method = ""fn"") %>%
+  preProcess_gaussFilter() %>%
+  x3ptools::sample_x3p()
+fadul1.1 <- fadul1.1_raw %>%
+  preProcess_crop(region = ""exterior"",
+                  radiusOffset = -30) %>%
+  preProcess_crop(region = ""interior"",
+                  radiusOffset = 200) %>%
+  preProcess_removeTrend(statistic = ""quantile"",
+                                 tau = .5,
+                                 method = ""fn"") %>%
+  preProcess_gaussFilter() %>%
+  x3ptools::sample_x3p()
+fadul1.2_processed <- fadul1.2_raw  %>%
+  preProcess_crop(region = ""exterior"",
+                  radiusOffset = -30) %>%
+  preProcess_crop(region = ""interior"",
+                  radiusOffset = 200) %>%
+  preProcess_removeTrend(statistic = ""quantile"",
+                                 tau = .5,
+                                 method = ""fn"") %>%
+  preProcess_gaussFilter() %>%
+  x3ptools::sa
+"
+"2","Error in .::x3ptools : unused argument (sa)
+"

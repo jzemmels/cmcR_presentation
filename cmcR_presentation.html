@@ -1,0 +1,288 @@
+<!DOCTYPE html>
+<html lang="" xml:lang="">
+  <head>
+    <title>cmcR: Open-Source Implementation of the Congruent Matching Cells method</title>
+    <meta charset="utf-8" />
+    <meta name="author" content="Joe Zemmels" />
+    <meta name="date" content="2020-11-30" />
+    <script src="libs/header-attrs/header-attrs.js"></script>
+    <link href="libs/remark-css/default.css" rel="stylesheet" />
+    <link href="libs/remark-css/default-fonts.css" rel="stylesheet" />
+  </head>
+  <body>
+    <textarea id="source">
+class: center, middle, inverse, title-slide
+
+# cmcR: Open-Source Implementation of the Congruent Matching Cells method
+### Joe Zemmels
+### Iowa State University (CSAFE)
+### 11/30/2020
+
+---
+
+
+
+
+
+
+# Algorithmic Cartridge Case Comparisons
+
+A general pipeline for comparing two cartridge case scans:
+
+1. **Preprocess** the scans to highlight breech face impressions.
+
+2. **Compare** the two scans and extract similarity features.
+
+3. Formulate a **Decision Rule** to determine whether similarity features support the same-source hypothesis.
+
+--
+
+Comparison algorithms attempt to automate most, if not all, of this process.
+
+- Many algorithms are currently described in prose rather than with code.
+
+- Ambiguities in written-word descriptions render results unreproducible.
+
+--
+
+Reproducibility refers to using method/data from previous study and arriving at same results.
+
+- Computational reproducibility requires *all* code and intermediate data be provided [(Peng, 2011)](https://www.jstor.org/stable/41352177?seq=1#metadata_info_tab_contents).
+
+---
+
+# Congruent Matching Cells (CMC) method
+
+Algorithm developed at NIST to perform Comparison and Decision Rule steps:
+ 
+1. Divide a reference scan into a grid of cells.
+ 
+2. Determine where each reference cell aligns best (translation &amp; rotation) in the target scan.
+
+3. Identify if a consensus exists among these estimated alignment values.
+
+4. Count number of cells with alignment values close to consensus.
+
+&lt;img src="images/cmc_illustration.PNG" width="75%" style="display: block; margin: auto;" /&gt;
+
+
+---
+# cmcR Package
+
+- CMC method requires user to make many processing decisions.
+
+- How sensitive is the method to different decisions?
+
+  - Is there an "optimal" set of decisions?
+
+--
+
+- cmcR package provides a general framework for investigation:
+
+ - `preProcess_*` functions perform initial processing
+ 
+ - `comparison_*` functions extract similarity features
+ 
+ - `decision_*` functions identify cells with alignment values close to consensus
+
+- Each step is further divided into modularized pieces.
+
+---
+## Preprocessing Example
+
+
+```r
+fadul1.1 &lt;- x3ptools::x3p_read("https://tsapps.nist.gov/NRBTD/Studies/CartridgeMeasurement/DownloadMeasurement/2d9cc51f-6f66-40a0-973a-a9292dbee36d")
+
+fadul1.1 %&gt;%
+  preProcess_crop(region = "exterior",...) %&gt;%
+  preProcess_crop(region = "interior",...) %&gt;%
+  preProcess_removeTrend(...) %&gt;%
+  preProcess_gaussFilter(...)
+```
+
+&lt;img src="images/preProcessDiagram.png" width="90%" style="display: block; margin: auto;" /&gt;
+
+
+---
+## Comparison &amp; Decision Rule Example
+
+
+
+
+
+
+```r
+comparisonData &lt;- comparison_allTogether(reference = fadul1.1,
+                                         target = fadul1.2,
+                                         theta = -24, #degrees
+                                         numCells = 64) #8x8 grid
+comparisonData &lt;- mutate(comparisonData,
+                         originalMethodClassif = decision_CMC(cellIndex,x,y,theta,pairwiseCompCor))
+cmcPlot(fadul1.1,fadul1.2,
+        reference_v_target_CMCs = comparisonData)
+```
+&lt;img src="cmcR_presentation_files/figure-html/unnamed-chunk-7-1.png" style="display: block; margin: auto;" /&gt;
+
+
+---
+# Conclusions
+
+- Algorithms used to compare forensic evidence should never be "black boxes." They deserve scrutiny.
+
+ - Reproducibility is often taken for granted.
+
+--
+
+- Communicating a method's sensitivity to different processing conditions is vital.
+
+- Scientific exploration and discovery is accelerated when a method is modularized into easily understood steps.
+
+--
+
+- cmcR package provides modularized, open-source tools for algorithmically comparing cartridge case scans.
+
+---
+class: center, middle
+
+#Thank You!
+
+---
+# References
+
+Fadul, T. et al. (2011). _An Empirical Study to Improve the Scientific Foundation of Forensic Firearm and Tool Mark Identification
+Utilizing 10 Consecutively Manufactured Slides_.
+
+Hofmann, H. et al. (2020). _x3ptools: Tools for Working with 3D Surface Measurements_. R package version 0.0.3.
+
+Peng, R. D. (2011). "Reproducible Research in Computational Science". In: _Science_ 334.6060, pp. 1226-1227.
+
+Song, J. (2013). "Proposed â€œNIST Ballistics Identification System (NBIS)â€ Based on 3D Topography Measurements on Correlation
+Cells". In: _American Firearm and Tool Mark Examiners Journal_ 45.2, p. 11.
+
+Tong, M. et al. (2015). "An Improved Algorithm of Congruent Matching Cells (CMC) Method for Firearm Evidence Identifications". In:
+_Journal of Research of the National Institute of Standards and Technology_ 120, p. 102. DOI:
+[10.6028/jres.120.008](https://doi.org/10.6028%2Fjres.120.008).
+    </textarea>
+<style data-target="print-only">@media screen {.remark-slide-container{display:block;}.remark-slide-scaler{box-shadow:none;}}</style>
+<script src="https://remarkjs.com/downloads/remark-latest.min.js"></script>
+<script>var slideshow = remark.create({
+"highlightStyle": "github",
+"highlightLines": true,
+"countIncrementalSlides": false
+});
+if (window.HTMLWidgets) slideshow.on('afterShowSlide', function (slide) {
+  window.dispatchEvent(new Event('resize'));
+});
+(function(d) {
+  var s = d.createElement("style"), r = d.querySelector(".remark-slide-scaler");
+  if (!r) return;
+  s.type = "text/css"; s.innerHTML = "@page {size: " + r.style.width + " " + r.style.height +"; }";
+  d.head.appendChild(s);
+})(document);
+
+(function(d) {
+  var el = d.getElementsByClassName("remark-slides-area");
+  if (!el) return;
+  var slide, slides = slideshow.getSlides(), els = el[0].children;
+  for (var i = 1; i < slides.length; i++) {
+    slide = slides[i];
+    if (slide.properties.continued === "true" || slide.properties.count === "false") {
+      els[i - 1].className += ' has-continuation';
+    }
+  }
+  var s = d.createElement("style");
+  s.type = "text/css"; s.innerHTML = "@media print { .has-continuation { display: none; } }";
+  d.head.appendChild(s);
+})(document);
+// delete the temporary CSS (for displaying all slides initially) when the user
+// starts to view slides
+(function() {
+  var deleted = false;
+  slideshow.on('beforeShowSlide', function(slide) {
+    if (deleted) return;
+    var sheets = document.styleSheets, node;
+    for (var i = 0; i < sheets.length; i++) {
+      node = sheets[i].ownerNode;
+      if (node.dataset["target"] !== "print-only") continue;
+      node.parentNode.removeChild(node);
+    }
+    deleted = true;
+  });
+})();
+(function() {
+  "use strict"
+  // Replace <script> tags in slides area to make them executable
+  var scripts = document.querySelectorAll(
+    '.remark-slides-area .remark-slide-container script'
+  );
+  if (!scripts.length) return;
+  for (var i = 0; i < scripts.length; i++) {
+    var s = document.createElement('script');
+    var code = document.createTextNode(scripts[i].textContent);
+    s.appendChild(code);
+    var scriptAttrs = scripts[i].attributes;
+    for (var j = 0; j < scriptAttrs.length; j++) {
+      s.setAttribute(scriptAttrs[j].name, scriptAttrs[j].value);
+    }
+    scripts[i].parentElement.replaceChild(s, scripts[i]);
+  }
+})();
+(function() {
+  var links = document.getElementsByTagName('a');
+  for (var i = 0; i < links.length; i++) {
+    if (/^(https?:)?\/\//.test(links[i].getAttribute('href'))) {
+      links[i].target = '_blank';
+    }
+  }
+})();
+// adds .remark-code-has-line-highlighted class to <pre> parent elements
+// of code chunks containing highlighted lines with class .remark-code-line-highlighted
+(function(d) {
+  const hlines = d.querySelectorAll('.remark-code-line-highlighted');
+  const preParents = [];
+  const findPreParent = function(line, p = 0) {
+    if (p > 1) return null; // traverse up no further than grandparent
+    const el = line.parentElement;
+    return el.tagName === "PRE" ? el : findPreParent(el, ++p);
+  };
+
+  for (let line of hlines) {
+    let pre = findPreParent(line);
+    if (pre && !preParents.includes(pre)) preParents.push(pre);
+  }
+  preParents.forEach(p => p.classList.add("remark-code-has-line-highlighted"));
+})(document);</script>
+
+<script>
+slideshow._releaseMath = function(el) {
+  var i, text, code, codes = el.getElementsByTagName('code');
+  for (i = 0; i < codes.length;) {
+    code = codes[i];
+    if (code.parentNode.tagName !== 'PRE' && code.childElementCount === 0) {
+      text = code.textContent;
+      if (/^\\\((.|\s)+\\\)$/.test(text) || /^\\\[(.|\s)+\\\]$/.test(text) ||
+          /^\$\$(.|\s)+\$\$$/.test(text) ||
+          /^\\begin\{([^}]+)\}(.|\s)+\\end\{[^}]+\}$/.test(text)) {
+        code.outerHTML = code.innerHTML;  // remove <code></code>
+        continue;
+      }
+    }
+    i++;
+  }
+};
+slideshow._releaseMath(document);
+</script>
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+(function () {
+  var script = document.createElement('script');
+  script.type = 'text/javascript';
+  script.src  = 'https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-MML-AM_CHTML';
+  if (location.protocol !== 'file:' && /^https?:/.test(script.src))
+    script.src  = script.src.replace(/^https?:/, '');
+  document.getElementsByTagName('head')[0].appendChild(script);
+})();
+</script>
+  </body>
+</html>

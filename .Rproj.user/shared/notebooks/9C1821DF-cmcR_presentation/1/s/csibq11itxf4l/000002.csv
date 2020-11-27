@@ -1,0 +1,11 @@
+"0","RefManageR::BibOptions(check.entries = FALSE,"
+"0","                       bib.style = ""authoryear"","
+"0","                       cite.style = ""alphabetic"","
+"0","                       style = ""markdown"","
+"0","                       max.names = 1,"
+"0","                       no.print.fields = c(""urldate"",""file"",""issn"",""url"",""keywords"",""language"",""abstract""),"
+"0","                       hyperlink = FALSE,"
+"0","                       dashed = FALSE)"
+"0","myBib <- RefManageR::ReadBib(""ref.bib"", check = FALSE)"
+"2","Loading required namespace: bibtex
+"
