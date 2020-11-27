@@ -113,11 +113,15 @@ knitr::include_graphics("images/preProcessDiagram.png")
 ---
 ## Comparison & Decision Rule Example
 
-```{r,include=FALSE,cache=TRUE}
+```{r, include=FALSE}
 library(cmcR)
 library(x3ptools)
 library(magrittr)
 library(dplyr)
+```
+
+
+```{r,include=FALSE,cache=TRUE}
 fadul1.1_id <- "DownloadMeasurement/2d9cc51f-6f66-40a0-973a-a9292dbee36d"
 # Same source comparison
 fadul1.2_id <- "DownloadMeasurement/cb296c98-39f5-46eb-abff-320a2f5568e8"
@@ -201,6 +205,10 @@ class: center, middle
 
 #Thank You!
 
+.footnote[
+[cmcR Website](https://github.com/CSAFE-ISU/cmcR), 
+[Slides](https://jzemmels.github.io/cmcR_presentation/cmcR_presentation.html#1)
+]
 ---
 # References
 
