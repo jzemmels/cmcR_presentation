@@ -1,0 +1,201 @@
+---
+title: "cmcR: Open-Source Implementation of the Congruent Matching Cells method"
+author: "Joe Zemmels"
+date: "2020-11-30"
+output:
+  xaringan::moon_reader:
+    mathjax: "https://cdn.bootcss.com/mathjax/2.7.1/MathJax.js?config=TeX-MML-AM_HTMLorMML"
+    css: ["default", "css/csafe.css", "css/csafe-fonts.css", "css/this-presentation.css"]
+    lib_dir: libs
+    nature:
+      countIncrementalSlides: false
+---
+
+```{r, load_refs, include=FALSE, cache=FALSE}
+RefManageR::BibOptions(check.entries = FALSE,
+                       bib.style = "authoryear",
+                       cite.style = "alphabetic",
+                       style = "markdown",
+                       max.names = 1,
+                       no.print.fields = c("urldate","file","issn","url","keywords","language","abstract"),
+                       hyperlink = FALSE,
+                       dashed = FALSE)
+myBib <- RefManageR::ReadBib("ref.bib", check = FALSE)
+```
+
+class: primary-blue
+## Cartridge Case Comparisons
+
+
+A general pipeline for comparing two cartridge case scans:
+
+1. **Preprocess** the scans to highlight breech face impressions.
+
+2. **Compare** the two scans and extract similarity features.
+
+3. Formulate a **Decision Rule** to determine whether similarity features support the same-source hypothesis.
+
+--
+
+Comparison algorithms attempt to automate most, if not all, of this process.
+
+- Many algorithms are currently described in prose rather than with code.
+
+- Ambiguities in written-word descriptions render results unreproducible [(Peng, 2011)](https://www.jstor.org/stable/41352177?seq=1#metadata_info_tab_contents).
+
+---
+class: primary-blue
+## cmcR Package
+
+- CMC method requires user to make many processing decisions.
+
+- How sensitive is the method to different decisions?
+
+  - Is there an "optimal" set of decisions?
+
+--
+
+- cmcR package provides a general framework for investigation:
+
+ - `preProcess_*` functions perform initial processing
+ 
+ - `comparison_*` functions extract similarity features
+ 
+ - `decision_*` functions identify cells with alignment values close to consensus
+
+ - Each step is further divided into modularized pieces.
+
+- Website: [https://csafe-isu.github.io/cmcR/](https://csafe-isu.github.io/cmcR/)
+
+---
+class: secondary-green
+## Preprocessing Example
+
+```{r, eval=FALSE}
+fadul1.1 <- x3ptools::x3p_read("https://tsapps.nist.gov/NRBTD/Studies/CartridgeMeasurement/DownloadMeasurement/2d9cc51f-6f66-40a0-973a-a9292dbee36d")
+
+fadul1.1 %>%
+  preProcess_crop(region = "exterior",...) %>%
+  preProcess_crop(region = "interior",...) %>%
+  preProcess_removeTrend(...) %>%
+  preProcess_gaussFilter(...)
+```
+
+```{r, fig.align='center',echo=FALSE,out.width="75%"}
+knitr::include_graphics("images/preProcessDiagram.png")
+```
+
+---
+class: secondary-blue
+## Comparison & Decision Rule
+
+```{r, include=FALSE}
+library(cmcR)
+library(x3ptools)
+library(magrittr)
+library(dplyr)
+```
+
+
+```{r,include=FALSE,cache=TRUE}
+fadul1.1_id <- "DownloadMeasurement/2d9cc51f-6f66-40a0-973a-a9292dbee36d"
+# Same source comparison
+fadul1.2_id <- "DownloadMeasurement/cb296c98-39f5-46eb-abff-320a2f5568e8"
+
+# Code to download breech face impressions:
+nbtrd_url <- "https://tsapps.nist.gov/NRBTD/Studies/CartridgeMeasurement/"
+
+fadul1.1_raw <- x3p_read(paste0(nbtrd_url,fadul1.1_id))
+fadul1.2_raw <- x3p_read(paste0(nbtrd_url,fadul1.2_id))
+
+fadul1.1 <- fadul1.1_raw %>%
+  preProcess_crop(region = "exterior",
+                  radiusOffset = -30) %>%
+  preProcess_crop(region = "interior",
+                  radiusOffset = 200) %>%
+  preProcess_removeTrend(statistic = "quantile",
+                                 tau = .5,
+                                 method = "fn") %>%
+  preProcess_gaussFilter() %>%
+  x3ptools::sample_x3p()
+
+fadul1.2 <- fadul1.2_raw %>%
+  preProcess_crop(region = "exterior",
+                  radiusOffset = -30) %>%
+  preProcess_crop(region = "interior",
+                  radiusOffset = 200) %>%
+  preProcess_removeTrend(statistic = "quantile",
+                                 tau = .5,
+                                 method = "fn") %>%
+  preProcess_gaussFilter() %>%
+  x3ptools::sample_x3p()
+```
+```{r,include=FALSE}
+comparisonData <- comparison_allTogether(reference = fadul1.1,
+                                         target = fadul1.2,
+                                         theta = -24, #degrees
+                                         numCells = 64)
+comparisonData <- comparisonData %>%
+  mutate(originalMethodClassif = decision_CMC(cellIndex,x,y,theta,pairwiseCompCor))
+plt <- cmcPlot(fadul1.1,fadul1.2,
+        reference_v_target_CMCs = comparisonData,
+        x3pNames = c("Fadul 1-1","Fadul 1-2"))
+```
+
+
+```{r,eval=FALSE}
+comparisonData <- comparison_allTogether(reference = fadul1.1,
+                                         target = fadul1.2,
+                                         theta = -24, #degrees
+                                         numCells = 64) #8x8 grid
+comparisonData <- mutate(comparisonData,
+                         originalMethodClassif = decision_CMC(cellIndex,x,y,theta,pairwiseCompCor))
+cmcPlot(fadul1.1,fadul1.2,
+        reference_v_target_CMCs = comparisonData)
+```
+```{r,echo=FALSE,fig.align="center"}
+plt$CMCs +
+  ggplot2::theme(plot.margin = ggplot2::margin(-7.5,0,0,0,"cm"))
+```
+
+---
+class: secondary-green
+# Conclusion
+
+- cmcR provides modularized, open-source tools for algorithmically comparing cartridge case scans.
+
+--
+
+- As cartridge case comparison algorithms mature, foundation set by cmcR can be developed upon.
+
+--
+
+<center> <big> <b> Thank You! </b> </big> </center>
+
+
+---
+class: primary-blue
+# References
+
+```{r refs1, echo=FALSE, results="asis"}
+RefManageR::NoCite(myBib,1:5)
+RefManageR::PrintBibliography(myBib)
+```
+
+---
+class: primary-green
+# Appendix: CMC method
+
+Algorithm developed at NIST to perform Comparison and Decision Rule steps:
+ 
+1. Divide a reference scan into a grid of cells.
+ 
+2. Determine where each reference cell aligns best (translation & rotation) in the target scan.
+
+3. Identify if a consensus exists among these estimated alignment values.
+
+4. Count number of cells with alignment values close to consensus.
+
+```{r,echo=FALSE, fig.align='center',out.width="70%"}
+knitr::include_graphics("images/cmc_illustration.PNG")
+```

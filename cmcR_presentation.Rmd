@@ -5,6 +5,7 @@ institute: "Iowa State University (CSAFE)"
 date: "11/30/2020"
 output:
   xaringan::moon_reader:
+    css: [csafe, csafe-fonts]
     lib_dir: libs
     nature:
       highlightStyle: github
@@ -201,7 +202,7 @@ plt$CMCs +
 - cmcR package provides modularized, open-source tools for algorithmically comparing cartridge case scans.
 
 ---
-class: center, middle
+class: center, middle, 
 
 #Thank You!
 
