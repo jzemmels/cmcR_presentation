@@ -37,11 +37,7 @@ A general pipeline for comparing two cartridge case scans:
 
 --
 
-Comparison algorithms attempt to automate most, if not all, of this process.
-
-- Many algorithms are currently described in prose rather than with code.
-
-- Ambiguities in written-word descriptions render results unreproducible [(Peng, 2011)](https://www.jstor.org/stable/41352177?seq=1#metadata_info_tab_contents).
+Comparison algorithms aim to automate most, if not all, of this process.
 
 ---
 class: primary-blue
