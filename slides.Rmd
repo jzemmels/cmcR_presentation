@@ -65,7 +65,7 @@ class: primary-blue
 
  - Each step is further divided into modularized pieces.
 
-- [**Website Link**](https://csafe-isu.github.io/cmcR/)
+- [**Package Website Link**](https://csafe-isu.github.io/cmcR/)
 
 ---
 class: secondary-green
