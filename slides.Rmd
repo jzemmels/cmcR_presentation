@@ -85,7 +85,7 @@ class: primary-blue
 <!-- - [**Package Website Link**](https://csafe-isu.github.io/cmcR/) -->
 
 ---
-class: secondary-blue
+class: secondary-green
 ## Preprocessing Example
 
 ```{r, eval=FALSE}
@@ -103,7 +103,7 @@ knitr::include_graphics("images/preProcessDiagram.png")
 ```
 
 ---
-class: secondary-green
+class: secondary-blue
 ## Comparison & Decision Rule
 
 ```{r, include=FALSE}
@@ -176,7 +176,7 @@ plt$CMCs +
 ```
 
 ---
-class: secondary-blue
+class: secondary-green
 ## Conclusion
 
 - cmcR provides modularized, open-source tools for algorithmically comparing cartridge case scans.
@@ -191,7 +191,7 @@ class: secondary-blue
 
 
 ---
-class: primary-green
+class: primary-blue
 # References
 
 ```{r refs1, echo=FALSE, results="asis"}
