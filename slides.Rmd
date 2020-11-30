@@ -1,6 +1,6 @@
 ---
 title: "cmcR: Open-Source Implementation of the Congruent Matching Cells method"
-author: "Joe Zemmels"
+author: "Joe Zemmels with Dr. Heike Hofmann & Dr. Susan VanderPlas"
 date: "2020-11-30"
 output:
   xaringan::moon_reader:
@@ -40,6 +40,25 @@ A general pipeline for comparing two cartridge case scans:
 Comparison algorithms aim to automate most, if not all, of this process.
 
 ---
+class: primary-green
+# CMC method
+
+Algorithm developed at NIST to perform Comparison and Decision Rule steps:
+ 
+1. Divide a reference scan into a grid of cells.
+ 
+2. Determine where each reference cell aligns best (translation & rotation) in the target scan.
+
+3. Identify if a consensus exists among these estimated alignment values.
+
+4. Count number of cells with alignment values close to consensus.
+
+```{r,echo=FALSE, fig.align='center',out.width="70%"}
+knitr::include_graphics("images/cmc_illustration.PNG")
+```
+
+
+---
 class: primary-blue
 ## cmcR Package
 
@@ -61,10 +80,12 @@ class: primary-blue
 
  - Each step is further divided into modularized pieces.
 
-- [**Package Website Link**](https://csafe-isu.github.io/cmcR/)
+<center> <b> <a href="https://csafe-isu.github.io/cmcR/">https://csafe-isu.github.io/cmcR/</a> </b> </center>
+
+<!-- - [**Package Website Link**](https://csafe-isu.github.io/cmcR/) -->
 
 ---
-class: secondary-green
+class: secondary-blue
 ## Preprocessing Example
 
 ```{r, eval=FALSE}
@@ -82,7 +103,7 @@ knitr::include_graphics("images/preProcessDiagram.png")
 ```
 
 ---
-class: secondary-blue
+class: secondary-green
 ## Comparison & Decision Rule
 
 ```{r, include=FALSE}
@@ -155,7 +176,7 @@ plt$CMCs +
 ```
 
 ---
-class: secondary-green
+class: secondary-blue
 # Conclusion
 
 - cmcR provides modularized, open-source tools for algorithmically comparing cartridge case scans.
@@ -170,7 +191,7 @@ class: secondary-green
 
 
 ---
-class: primary-blue
+class: primary-green
 # References
 
 ```{r refs1, echo=FALSE, results="asis"}
@@ -178,20 +199,3 @@ RefManageR::NoCite(myBib,1:5)
 RefManageR::PrintBibliography(myBib)
 ```
 
----
-class: primary-green
-# Appendix: CMC method
-
-Algorithm developed at NIST to perform Comparison and Decision Rule steps:
- 
-1. Divide a reference scan into a grid of cells.
- 
-2. Determine where each reference cell aligns best (translation & rotation) in the target scan.
-
-3. Identify if a consensus exists among these estimated alignment values.
-
-4. Count number of cells with alignment values close to consensus.
-
-```{r,echo=FALSE, fig.align='center',out.width="70%"}
-knitr::include_graphics("images/cmc_illustration.PNG")
-```

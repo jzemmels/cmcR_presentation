@@ -3,7 +3,7 @@
   <head>
     <title>cmcR: Open-Source Implementation of the Congruent Matching Cells method</title>
     <meta charset="utf-8" />
-    <meta name="author" content="Joe Zemmels" />
+    <meta name="author" content="Joe Zemmels with Dr. Heike Hofmann &amp; Dr. Susan VanderPlas" />
     <meta name="date" content="2020-11-30" />
     <script src="libs/header-attrs-2.5.3/header-attrs.js"></script>
     <link href="libs/remark-css-0.0.1/default.css" rel="stylesheet" />
@@ -16,7 +16,7 @@
 class: center, middle, inverse, title-slide
 
 # cmcR: Open-Source Implementation of the Congruent Matching Cells method
-### Joe Zemmels
+### Joe Zemmels with Dr. Heike Hofmann &amp; Dr. Susan VanderPlas
 ### 2020-11-30
 
 ---
@@ -41,6 +41,23 @@ A general pipeline for comparing two cartridge case scans:
 Comparison algorithms aim to automate most, if not all, of this process.
 
 ---
+class: primary-green
+# CMC method
+
+Algorithm developed at NIST to perform Comparison and Decision Rule steps:
+ 
+1. Divide a reference scan into a grid of cells.
+ 
+2. Determine where each reference cell aligns best (translation &amp; rotation) in the target scan.
+
+3. Identify if a consensus exists among these estimated alignment values.
+
+4. Count number of cells with alignment values close to consensus.
+
+&lt;img src="images/cmc_illustration.PNG" width="70%" style="display: block; margin: auto;" /&gt;
+
+
+---
 class: primary-blue
 ## cmcR Package
 
@@ -62,10 +79,12 @@ class: primary-blue
 
  - Each step is further divided into modularized pieces.
 
-- [**Package Website Link**](https://csafe-isu.github.io/cmcR/)
+&lt;center&gt; &lt;b&gt; &lt;a href="https://csafe-isu.github.io/cmcR/"&gt;https://csafe-isu.github.io/cmcR/&lt;/a&gt; &lt;/b&gt; &lt;/center&gt;
+
+&lt;!-- - [**Package Website Link**](https://csafe-isu.github.io/cmcR/) --&gt;
 
 ---
-class: secondary-green
+class: secondary-blue
 ## Preprocessing Example
 
 
@@ -82,7 +101,7 @@ fadul1.1 %&gt;%
 &lt;img src="images/preProcessDiagram.png" width="75%" style="display: block; margin: auto;" /&gt;
 
 ---
-class: secondary-blue
+class: secondary-green
 ## Comparison &amp; Decision Rule
 
 
@@ -103,10 +122,10 @@ comparisonData &lt;- mutate(comparisonData,
 cmcPlot(fadul1.1,fadul1.2,
         reference_v_target_CMCs = comparisonData)
 ```
-&lt;img src="slides_files/figure-html/unnamed-chunk-7-1.png" style="display: block; margin: auto;" /&gt;
+&lt;img src="slides_files/figure-html/unnamed-chunk-8-1.png" style="display: block; margin: auto;" /&gt;
 
 ---
-class: secondary-green
+class: secondary-blue
 # Conclusion
 
 - cmcR provides modularized, open-source tools for algorithmically comparing cartridge case scans.
@@ -121,7 +140,7 @@ class: secondary-green
 
 
 ---
-class: primary-blue
+class: primary-green
 # References
 
 Fadul, T. et al. (2011). _An Empirical Study to Improve the Scientific
@@ -144,21 +163,6 @@ of Research of the National Institute of Standards and Technology_ 120,
 p. 102. DOI:
 [10.6028/jres.120.008](https://doi.org/10.6028%2Fjres.120.008).
 
----
-class: primary-green
-# Appendix: CMC method
-
-Algorithm developed at NIST to perform Comparison and Decision Rule steps:
- 
-1. Divide a reference scan into a grid of cells.
- 
-2. Determine where each reference cell aligns best (translation &amp; rotation) in the target scan.
-
-3. Identify if a consensus exists among these estimated alignment values.
-
-4. Count number of cells with alignment values close to consensus.
-
-&lt;img src="images/cmc_illustration.PNG" width="70%" style="display: block; margin: auto;" /&gt;
     </textarea>
 <style data-target="print-only">@media screen {.remark-slide-container{display:block;}.remark-slide-scaler{box-shadow:none;}}</style>
 <script src="https://remarkjs.com/downloads/remark-latest.min.js"></script>

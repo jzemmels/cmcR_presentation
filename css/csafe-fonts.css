@@ -3,8 +3,8 @@
 @import url(https://fonts.googleapis.com/css?family=Sanchez:400,400i);
 @import url(https://fonts.googleapis.com/css?family=Droid+Serif:400,700,400italic);
 
-body {
-  font-family: 'Montserrat', 'Sanchez Regular Italic', serif;
+body { 
+  font-family: 'Montserrat', 'Sanchez Regular Italic', serif; 
   font-weight: 300;
 }
 
@@ -28,6 +28,6 @@ h3 {
   text-shadow: 0 0 0;
 }
 
-.remark-code, .remark-inline-code {
-  font-family: 'Source Code Pro', 'Lucida Console', Monaco, monospace;
+.remark-code, .remark-inline-code { 
+  font-family: 'Source Code Pro', 'Lucida Console', Monaco, monospace; 
 }
