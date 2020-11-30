@@ -177,7 +177,7 @@ plt$CMCs +
 
 ---
 class: secondary-blue
-# Conclusion
+## Conclusion
 
 - cmcR provides modularized, open-source tools for algorithmically comparing cartridge case scans.
 
