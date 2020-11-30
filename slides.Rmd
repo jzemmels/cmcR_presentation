@@ -1,6 +1,6 @@
 ---
 title: "cmcR: Open-Source Implementation of the Congruent Matching Cells method"
-author: "Joe Zemmels with Dr. Heike Hofmann & Dr. Susan VanderPlas"
+author: "Joe Zemmels, Dr. Heike Hofmann, Dr. Susan VanderPlas"
 date: "2020-11-30"
 output:
   xaringan::moon_reader:
