@@ -72,7 +72,7 @@ class: primary-blue
  
  - `comparison_*` functions extract similarity features
  
- - `decision_*` functions identify cells with alignment values close to consensus
+ - `decision_*` functions classify CMCs
 
  - Each step is further divided into modularized pieces.
 
