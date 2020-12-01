@@ -43,15 +43,11 @@ Comparison algorithms aim to automate most, if not all, of this process.
 class: primary-green
 # CMC method
 
-Algorithm developed at NIST to perform Comparison and Decision Rule steps:
- 
-1. Divide a reference scan into a grid of cells.
- 
-2. Determine where each reference cell aligns best (translation & rotation) in the target scan.
+- Algorithm developed at NIST that addresses Comparison and Decision Rule steps.
 
-3. Identify if a consensus exists among these estimated alignment values.
+- Involves dividing a reference scan into a grid of cells that search for optimal alignment in target scan.
 
-4. Count number of cells with alignment values close to consensus.
+- Use estimated alignment (translation & rotation) and CCF as similarity features to classify matches.
 
 ```{r,echo=FALSE, fig.align='center',out.width="70%"}
 knitr::include_graphics("images/cmc_illustration.PNG")
